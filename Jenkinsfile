@@ -20,12 +20,14 @@ pipeline {
                 sh '''
                     if [ "$(docker buildx ls | grep multiarch)" -eq 1 ]; then
                         docker buildx create --name=multiarch --driver=docker-container --use --bootstrap 
+                    else
+                        docker buildx use multiarch
                     fi
                 '''
                 
                 script {
                     withCredentials([usernamePassword(credentialsId: registryCredential, passwordVariable: 'password', usernameVariable: 'username')]) {
-                        sh "echo $password | docker login -u $username --password-stdin"
+                        sh('docker login -u $username -p $password')
                     }
                 }
                 
