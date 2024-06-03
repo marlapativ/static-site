@@ -2,7 +2,6 @@ pipeline {
     environment {
         imagename = "marlapativ/static-site"
         registryCredential = 'docker'
-        dockerImage = ''
     }
     agent any
     stages {
@@ -30,7 +29,6 @@ pipeline {
                         sh('echo $password | docker login -u $username --password-stdin')
                     }
                 }
-                
             }
         }
         stage('Build and Push Docker Image') {
