@@ -25,7 +25,7 @@ pipeline {
         stage ('Image Push') {
             steps {
                 script {
-                        docker.withRegistry('https://registry.hub.docker.com', 'b78e5c66-9851-4a1d-972a-778416f55e00') {
+                    docker.withRegistry('', 'b78e5c66-9851-4a1d-972a-778416f55e00') {
                         dockerImage.push("$BUILD_TAG")
                         dockerImage.push('latest')
                     }
