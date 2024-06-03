@@ -17,10 +17,10 @@ pipeline {
         stage('Setup Docker') {
             steps {
                 sh '''
-                    if [ "$(docker buildx ls | grep multiarch)" -eq 1 ]; then
-                        docker buildx create --name=multiarch --driver=docker-container --use --bootstrap 
-                    else
+                    if [ -n "$(docker buildx ls | grep multiarch)" ]; then
                         docker buildx use multiarch
+                    else
+                        docker buildx create --name=multiarch --driver=docker-container --use --bootstrap 
                     fi
                 '''
                 
