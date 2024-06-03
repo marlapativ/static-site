@@ -1,7 +1,7 @@
 pipeline {
     environment {
         imagename = "marlapativ/static-site"
-        registryCredential = 'b78e5c66-9851-4a1d-972a-778416f55e00'
+        registryCredential = 'docker'
         dockerImage = ''
     }
     agent any
@@ -25,7 +25,7 @@ pipeline {
         stage ('Image Push') {
             steps {
                 script {
-                    docker.withRegistry('', 'b78e5c66-9851-4a1d-972a-778416f55e00') {
+                    docker.withRegistry('', registryCredential) {
                         dockerImage.push("$BUILD_TAG")
                         dockerImage.push('latest')
                     }
