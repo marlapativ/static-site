@@ -18,7 +18,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build imagename
+                    dockerImage = docker.build(imagename,  '--platform linux/amd64,linux/arm64 .')
+                    dockerImage.tag("$BUILD_TAG")
                 }
             }
         }
@@ -26,7 +27,6 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', registryCredential) {
-                        dockerImage.push("$BUILD_TAG")
                         dockerImage.push('latest')
                     }
                 }
