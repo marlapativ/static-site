@@ -15,21 +15,33 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build Docker Image') {
+        stage('Setup Docker') {
             steps {
+                sh '''
+                    if [ "$(docker buildx ls | grep multiarch)" -eq 1 ]; then
+                        docker buildx create --name=multiarch --driver=docker-container --use --bootstrap 
+                    fi
+                '''
+                
                 script {
-                    dockerImage = docker.build(imagename,  '--platform linux/amd64,linux/arm64 --builder multiarch .')
-                    dockerImage.tag("$BUILD_TAG")
-                }
-            }
-        }
-        stage ('Image Push') {
-            steps {
-                script {
-                    docker.withRegistry('', registryCredential) {
-                        dockerImage.push('latest')
+                    withCredentials([usernamePassword(credentialsId: registryCredential, passwordVariable: 'password', usernameVariable: 'username')]) {
+                        sh "echo $password | docker login -u $username --password-stdin"
                     }
                 }
+                
+            }
+        }
+        stage('Build and Push Docker Image') {
+            steps {
+                sh '''
+                    docker buildx build \
+                    --platform linux/amd64,linux/arm64 \
+                    --builder multiarch \
+                    -t $imagename:latest \
+                    -t $imagename:$BUILD_TAG \
+                    --push \
+                    .
+                '''
             }
         }
     }
