@@ -18,4 +18,3 @@ ENV CADDY_ADDRESS=:$CADDY_PORT
 
 # Expose the port
 EXPOSE $CADDY_PORT
-

@@ -1,7 +1,7 @@
 pipeline {
     environment {
         imagename = "marlapativ/static-site"
-        registryCredential = 'docker'
+        registryCredential = 'dockerhub'
     }
     agent any
     stages {
