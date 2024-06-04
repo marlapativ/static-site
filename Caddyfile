@@ -1,0 +1,4 @@
+{$CADDY_ADDRESS:":8080"} {
+    file_server
+}
+
