@@ -12,9 +12,5 @@ COPY Caddyfile /etc/caddy/Caddyfile
 LABEL org.opencontainers.image.title="CSYE 7125 Static Site"
 LABEL org.opencontainers.image.description="CSYE7125 Static Site hosted with Caddy"
 
-# Set Environment Variables
-ENV CADDY_PORT=8080
-ENV CADDY_ADDRESS=:$CADDY_PORT
-
-# Expose the port
-EXPOSE $CADDY_PORT
+# Set Default Environment Variables
+ENV CADDY_ADDRESS=:8080
