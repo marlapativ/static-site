@@ -13,4 +13,4 @@ LABEL org.opencontainers.image.title="CSYE 7125 Static Site"
 LABEL org.opencontainers.image.description="CSYE7125 Static Site hosted with Caddy"
 
 # Set Default Environment Variables
-ENV CADDY_ADDRESS=:8080
+ENV CADDY_PORT=8080
