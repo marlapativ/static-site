@@ -26,7 +26,7 @@ pipeline {
                 
                 script {
                     withCredentials([usernamePassword(credentialsId: registryCredential, passwordVariable: 'password', usernameVariable: 'username')]) {
-                        sh('echo $password | docker login -u $username --password-stdin')
+                        sh('docker login -u $username -p $password')
                     }
                 }
             }
