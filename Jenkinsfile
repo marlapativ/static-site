@@ -31,6 +31,21 @@ pipeline {
                 }
             }
         }
+        stage('Generate Version') {
+            tools {
+                nodejs "nodejs"
+            }
+            steps {
+                sh '''
+                    npx semantic-release \
+                        -p @semantic-release/changelog \
+                        -p @semantic-release/commit-analyzer \
+                        -p @semantic-release/release-notes-generator \
+                        -p @semantic-release/github \
+                        -p @semantic-release/git
+                '''
+            }
+        }
         stage('Build and Push Docker Image') {
             steps {
                 sh '''
