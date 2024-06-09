@@ -1,7 +1,4 @@
 pipeline {
-    tools {
-        nodejs "nodejs"
-    }
     agent any
     stages {
         stage('Start') {
@@ -15,12 +12,15 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Print after checkout') {
+        stage('Print env') {
             steps{
-                sh 'ls -la'
+                sh 'env'
             }
         }
         stage('Commit message lint') {
+            tools {
+                nodejs "nodejs"
+            }
             steps{
                 sh 'npx commitlint --last -x @commitlint/config-conventional'
             }
