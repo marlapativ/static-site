@@ -20,7 +20,7 @@ pipeline {
                 sh 'ls -la'
             }
         }
-        stage('Checkout') {
+        stage('Commit message lint') {
             steps{
                 sh 'npx commitlint --last -x @commitlint/config-conventional'
             }
