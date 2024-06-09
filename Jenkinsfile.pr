@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+    stages {
+        stage('lint commit messages') {
+            tools {
+                nodejs "nodejs"
+            }
+            steps{
+                
+                sh '''
+                    export CHANGE_TARGET_COMMIT_ID=$(git rev-parse origin/$CHANGE_TARGET)
+                    npx commitlint \
+                        -x @commitlint/config-conventional \
+                        -f $CHANGE_TARGET_COMMIT_ID
+                '''
+            }
+        }
+    }
+}
