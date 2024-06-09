@@ -3,47 +3,27 @@ pipeline {
         nodejs "nodejs"
     }
     agent any
-    triggers {
-        onPullRequest {
-            setPreStatus()
-            cancelQueued()
-
-            mode {
-                heavyHooks()
-            }
-
-            repoProviders {
-                gitHubPlugin {
-                    manageHooks(false)
-                    cacheConnection(false)
-                    permission { push() }
-                }
-            }
-
-            events {
-                opened()
-                closed()
-                commit()
+    stages {
+        stage('Start') {
+            steps{
+                sh 'ls -la'
             }
         }
-    }
-
-    steps {
-        updateStatusOnGH {
-            message('Building...')
+        stage('Checkout') {
+            steps{
+                cleanWs()
+                checkout scm
+            }
         }
-    }
-
-    publishers {
-        commitStatusOnGH {
-            unstableAsError()
-            message('Build finished')
+        stage('Print after checkout') {
+            steps{
+                sh 'ls -la'
+            }
         }
-
-        commentPullRequestOnGH() {
-            message("comment")
-            onlyFailedBuilds()
-            commentErrorIsFailure()
+        stage('Checkout') {
+            steps{
+                sh 'npx commitlint --last -x @commitlint/config-conventional'
+            }
         }
     }
 }
