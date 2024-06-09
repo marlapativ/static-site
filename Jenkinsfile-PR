@@ -1,0 +1,49 @@
+pipeline {
+    tools {
+        nodejs "nodejs"
+    }
+    agent any
+    triggers {
+        onPullRequest {
+            setPreStatus()
+            cancelQueued()
+
+            mode {
+                heavyHooks()
+            }
+
+            repoProviders {
+                gitHubPlugin {
+                    manageHooks(false)
+                    cacheConnection(false)
+                    permission { push() }
+                }
+            }
+
+            events {
+                opened()
+                closed()
+                commit()
+            }
+        }
+    }
+
+    steps {
+        updateStatusOnGH {
+            message('Building...')
+        }
+    }
+
+    publishers {
+        commitStatusOnGH {
+            unstableAsError()
+            message('Build finished')
+        }
+
+        commentPullRequestOnGH() {
+            message("comment")
+            onlyFailedBuilds()
+            commentErrorIsFailure()
+        }
+    }
+}
