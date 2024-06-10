@@ -5,15 +5,6 @@ pipeline {
     }
     agent any
     stages {
-        stage('Checkout') {
-            when {
-                branch 'main'
-            }
-            steps{
-                cleanWs()
-                checkout scm
-            }
-        }
         stage('Setup Docker') {
             steps {
                 sh '''
@@ -38,22 +29,24 @@ pipeline {
             steps {
                 sh '''
                     npx semantic-release \
-                        -p @semantic-release/changelog \
                         -p @semantic-release/commit-analyzer \
                         -p @semantic-release/release-notes-generator \
-                        -p @semantic-release/github \
-                        -p @semantic-release/git
+                        -p @semantic-release/github
                 '''
             }
         }
         stage('Build and Push Docker Image') {
             steps {
                 sh '''
+                    export IMAGE_TAG=$(git describe --tags --abbrev=0)
+                '''
+
+                sh '''
                     docker buildx build \
                     --platform linux/amd64,linux/arm64 \
                     --builder multiarch \
                     -t $imagename:latest \
-                    -t $imagename:$BUILD_TAG \
+                    -t $imagename:$IMAGE_TAG \
                     --push \
                     .
                 '''
