@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('env') {
-            steps{
-                sh 'env'
-            }
-        }
         stage('lint commit messages') {
             tools {
                 nodejs "nodejs"
