@@ -11,6 +11,7 @@ pipeline {
                     npx commitlint \
                         -x @commitlint/config-conventional \
                         -f $CHANGE_TARGET_COMMIT_ID
+                        
                 '''
             }
         }
