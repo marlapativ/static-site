@@ -6,7 +6,9 @@ pipeline {
                 nodejs "nodejs"
             }
             steps{
-                
+                sh 'env'
+            }
+            steps{
                 sh '''
                     export CHANGE_TARGET_COMMIT_ID=$(git rev-parse origin/$CHANGE_TARGET)
                     npx commitlint \

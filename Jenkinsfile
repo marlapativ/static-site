@@ -1,7 +1,4 @@
 pipeline {
-    tools {
-        nodejs "nodejs"
-    }
     environment {
         imagename = "marlapativ/static-site"
         registryCredential = 'dockerhub'
@@ -35,6 +32,9 @@ pipeline {
             }
         }
         stage('Generate Version') {
+            tools {
+                nodejs "nodejs"
+            }
             steps {
                 sh '''
                     npx semantic-release \
