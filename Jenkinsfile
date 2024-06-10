@@ -27,12 +27,16 @@ pipeline {
                 nodejs "nodejs"
             }
             steps {
-                sh '''
-                    npx semantic-release \
-                        -p @semantic-release/commit-analyzer \
-                        -p @semantic-release/release-notes-generator \
-                        -p @semantic-release/github
-                '''
+                script {
+                    withCredentials([usernamePassword(credentialsId: github, passwordVariable: 'GITHUB_TOKEN')]) {
+                        sh '''
+                            npx semantic-release \
+                                -p @semantic-release/commit-analyzer \
+                                -p @semantic-release/release-notes-generator \
+                                -p @semantic-release/github
+                        '''
+                    }
+                }
             }
         }
         stage('Build and Push Docker Image') {
