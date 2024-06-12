@@ -43,9 +43,7 @@ pipeline {
             steps {
                 sh '''
                     export IMAGE_TAG=$(git describe --tags --abbrev=0)
-                '''
 
-                sh '''
                     docker buildx build \
                     --platform linux/amd64,linux/arm64 \
                     --builder multiarch \
