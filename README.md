@@ -16,6 +16,6 @@ This repository contains configurations and html files for a static site hosted 
 ## Project Structure
 
 - `Caddyfile`: Configuration file for Caddy.
-- `index.html`: Homepage of the site.
+- `index.html`: Homepage of the site with team details.
 - `Dockerfile`: Dockerfile for building the container consisting of static site & Caddy.
 - `Jenkinsfile`: Jenkins pipeline for building and pushing image of the static site.
